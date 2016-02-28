@@ -1,7 +1,11 @@
 package com.company;
 
 import javax.swing.*;
+import java.awt.event.*;
 import java.awt.*;
+import java.io.IOException;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 
 
 /* FrameDemo.java requires no other files. */
@@ -16,11 +20,42 @@ public class Frame {
         JFrame frame = new JFrame("Game of the YEAR");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        JButton javaButton = new JButton("Start game");
+        javaButton.isDefaultButton();
+        frame.getContentPane().add(javaButton, BorderLayout.BEFORE_FIRST_LINE);
+        javaButton.setPreferredSize(new Dimension(10, 100));
+        javaButton.setVisible(true);
+
+        JButton startButton = new JButton("Run exe");
+        startButton.isDefaultButton();
+        frame.getContentPane().add(startButton, BorderLayout.BEFORE_LINE_BEGINS);
+        startButton.setPreferredSize(new Dimension(100, 1));
+        startButton.setVisible(true);
+        startButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                try {
+                    Process p = Runtime.getRuntime().exec("C:\\Program Files (x86)/Notepad++/notepad++.exe");
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+//                Process process = Runtime.getRuntime().exec("cmd.exe /C start C:\\Program Files (x86)\Notepad++\\notepad++.exe" );
+            }
+        });
+
         JLabel emptyLabel = new JLabel("");
         emptyLabel.setPreferredSize(new Dimension(1280, 1240));
         frame.getContentPane().add(emptyLabel, BorderLayout.CENTER);
 
+        JLabel secondLabel = new JLabel("");
+        secondLabel.setPreferredSize(new Dimension(200, 200));
+        frame.getContentPane().add(secondLabel, BorderLayout.AFTER_LAST_LINE);
         frame.setIconImage(new ImageIcon("E:\\Adrian/icon.png").getImage());
+        javaButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                secondLabel.setText("Game is started. Loading...");
+                secondLabel.setHorizontalTextPosition(SwingConstants.LEFT);
+            }
+        });
         //Display the window.
         frame.pack();
         frame.setVisible(true);
@@ -28,6 +63,9 @@ public class Frame {
         //frame.add(new JLabel(new Button));
     }
         //Button add
+
+
+
 
 
     public static void main(String[] args) {

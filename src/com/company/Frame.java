@@ -6,6 +6,14 @@ import java.awt.*;
 import java.io.IOException;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import java.awt.Desktop;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+
 
 
 /* FrameDemo.java requires no other files. */
@@ -25,6 +33,18 @@ public class Frame {
         frame.getContentPane().add(javaButton, BorderLayout.BEFORE_FIRST_LINE);
         javaButton.setPreferredSize(new Dimension(10, 100));
         javaButton.setVisible(true);
+
+        javaButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e)
+            {
+                try {
+                    java.awt.Desktop.getDesktop().browse(URI.create("http://store.steampowered.com/news/?feed=steam_updates&appids=730"));
+                }catch (java.io.IOException a) {
+               // openWebPage("http://www.mywebsite.com/forum/");
+                        System.out.println("ne sudba");
+            }}
+        });
+
 
         JButton startButton = new JButton("Run exe");
         startButton.isDefaultButton();
@@ -49,7 +69,7 @@ public class Frame {
         JLabel secondLabel = new JLabel("");
         secondLabel.setPreferredSize(new Dimension(200, 200));
         frame.getContentPane().add(secondLabel, BorderLayout.AFTER_LAST_LINE);
-        frame.setIconImage(new ImageIcon("E:\\Adrian/icon.png").getImage());
+        frame.setIconImage(new ImageIcon("./csgoicon.png").getImage());
         javaButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 secondLabel.setText("Game is started. Loading...");
@@ -59,7 +79,7 @@ public class Frame {
         //Display the window.
         frame.pack();
         frame.setVisible(true);
-        frame.add(new JLabel(new ImageIcon("E:\\Adrian/csgo.jpg")));
+        frame.add(new JLabel(new ImageIcon("./csgo.jpg")));
         //frame.add(new JLabel(new Button));
     }
         //Button add

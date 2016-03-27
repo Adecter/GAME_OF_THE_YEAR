@@ -1,23 +1,19 @@
 package com.company;
-
 import javax.swing.*;
-import java.awt.event.*;
 import java.awt.*;
 import java.io.*;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import java.awt.Desktop;
-import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Scanner;
 import java.io.FileInputStream;
+
 
 /* FrameDemo.java requires no other files. */
 public class Frame {
+
     /**
      * Create the GUI and show it.  For thread safety,
      * this method should be invoked from the
@@ -26,6 +22,10 @@ public class Frame {
     private static void createAndShowGUI() throws FileNotFoundException {
         //Create and set up the window.
         JFrame frame = new JFrame("Game of the YEAR");
+        frame.setSize(1000,1000);
+        frame.setLocation(150, 10);
+        frame.setMinimumSize(new Dimension(950, 950));
+        frame.setMaximumSize(new Dimension(1000,1000));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JButton javaButton = new JButton("Start game");
@@ -37,7 +37,7 @@ public class Frame {
         javaButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
-                    java.awt.Desktop.getDesktop().browse(URI.create("http://store.steampowered.com/news/?feed=steam_updates&appids=730"));
+                    java.awt.Desktop.getDesktop().browse(URI.create("http://store.steampowered.com/app/730/?snr=1_5_9__300"));
                 } catch (java.io.IOException a) {
 //                     openWebPage("http://www.mywebsite.com/forum/");
                     System.out.println("ne sudba");
@@ -102,13 +102,13 @@ public class Frame {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(buffer);
+      //  System.out.println(buffer);
 
         ListButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 ListLabel.setHorizontalTextPosition(SwingConstants.CENTER);
                 ListLabel.setText(("<html>"+String.valueOf(buffer)+"</html>"));
-                System.out.println(String.valueOf(buffer));
+
 
             }
         });
@@ -121,7 +121,26 @@ public class Frame {
     //Button add
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+
+        BufferedWriter out = new BufferedWriter(new FileWriter("E:\\Adrian/FrameTest/out/production/FrameTest/info.txt"));
+        try {
+            String inputLine = null;
+            do {
+                inputLine=in.readLine();
+                out.write(inputLine);
+                out.newLine();
+            } while (!inputLine.equalsIgnoreCase("eof"));
+            System.out.print("Write Successful");
+        } catch(IOException e1) {
+            System.out.println("Error during reading/writing");
+        } finally {
+            out.close();
+            in.close();
+        }
+
         //Schedule a job for the event-dispatching thread:
         //creating and showing this application's GUI.
         javax.swing.SwingUtilities.invokeLater(new Runnable() {

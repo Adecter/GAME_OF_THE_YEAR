@@ -1,4 +1,5 @@
 package com.company;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
@@ -9,6 +10,9 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.URI;
 import java.io.FileInputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 /* FrameDemo.java requires no other files. */
@@ -21,12 +25,22 @@ public class Frame {
      */
     private static void createAndShowGUI() throws FileNotFoundException {
         //Create and set up the window.
+        JFrame.setDefaultLookAndFeelDecorated(true);
         JFrame frame = new JFrame("Game of the YEAR");
-        frame.setSize(1000,1000);
+        frame.setSize(1000, 1000);
         frame.setLocation(150, 10);
         frame.setMinimumSize(new Dimension(950, 950));
-        frame.setMaximumSize(new Dimension(1000,1000));
+        frame.setMaximumSize(new Dimension(1000, 1000));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        DateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+        Date d = new Date();
+        System.out.println(df.format(d));
+        JLabel timelabel = new JLabel();
+        timelabel.setText(String.valueOf(d));
+        frame.getContentPane().add(timelabel, BorderLayout.CENTER);
+        timelabel.setFont(new Font("Courier New", Font.ITALIC, 36));
+        timelabel.setSize(10, 20);
 
         JButton javaButton = new JButton("Start game");
         javaButton.isDefaultButton();
@@ -78,13 +92,51 @@ public class Frame {
 
             }
         });
+
+
         JButton ListButton = new JButton("Wiki");
         ListButton.isDefaultButton();
         frame.getContentPane().add(ListButton, BorderLayout.LINE_END);
         ListButton.setPreferredSize(new Dimension(20, 1));
         ListButton.setVisible(true);
-        JLabel ListLabel = new JLabel("");
+        final JLabel ListLabel = new JLabel("");
+        ListLabel.setFont(new Font("Serif", Font.ROMAN_BASELINE, 36));
         frame.getContentPane().add(ListLabel, BorderLayout.AFTER_LAST_LINE);
+
+        final int[] r = {255, 255, 255, 0, 0, 255};
+        final int[] g = {0, 128, 255, 255, 255, 0, 0};
+        final int[] b = {0, 0, 0, 0, 255, 255, 255};
+        final int[] max = {250};
+
+
+        Thread myThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+//
+                    int i1=0;
+                    while (i1 <= 5) {
+                        ListLabel.setForeground(new Color(r[i1], g[i1], b[i1]));
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        i1++;
+                    }
+
+
+                }
+            }
+        });
+
+        //Color.HSBtoRGB(0.9f,1.0f,0.8f));
 
         int character;
         StringBuffer buffer = new StringBuffer("");
@@ -102,12 +154,16 @@ public class Frame {
         } catch (IOException e) {
             e.printStackTrace();
         }
-      //  System.out.println(buffer);
+        //  System.out.println(buffer);
+
 
         ListButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 ListLabel.setHorizontalTextPosition(SwingConstants.CENTER);
-                ListLabel.setText(("<html>"+String.valueOf(buffer)+"</html>"));
+
+
+                myThread.start();
+                ListLabel.setText(("<html>" + String.valueOf(buffer) + "||create at " + df.format(d) + "</html>"));
 
 
             }
@@ -129,12 +185,12 @@ public class Frame {
         try {
             String inputLine = null;
             do {
-                inputLine=in.readLine();
+                inputLine = in.readLine();
                 out.write(inputLine);
                 out.newLine();
-            } while (!inputLine.equalsIgnoreCase("eof"));
+            } while (!inputLine.equalsIgnoreCase("."));
             System.out.print("Write Successful");
-        } catch(IOException e1) {
+        } catch (IOException e1) {
             System.out.println("Error during reading/writing");
         } finally {
             out.close();
